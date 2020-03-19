@@ -36,9 +36,9 @@ app.set('view engine', 'ejs');
 
 //-----------DB------------------
 const pool = mysql.createPool({
-    host: '183.101.196.138',
-    user: 'kdkd',
-    password: 'kdkd',
+    host: 'db-kdkd.cpuglwdnhpqg.ap-northeast-2.rds.amazonaws.com',
+    user: 'kdkd1234',
+    password: 'kdkd1234',
     database: 'kdkd',
     port: 3306,
     connectionLimit: 20,
@@ -232,7 +232,7 @@ chat.on('connection', (socket) => {
 //                     시리얼통신 (RFID)                     //
 //////////////////////////////////////////////////////////////
 
-const SerialPort = require('serialport');
+/*const SerialPort = require('serialport');
 
 const port = new SerialPort("COM10", {
     baudRate: 9600
@@ -252,7 +252,7 @@ port.open(() => {
             result = "";
         }
     }); 
-});
+});*/
 
 //////////////////////////////////////////////////////////////
 //               error page (무조건 맨밑!!)                  //
