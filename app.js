@@ -36,16 +36,16 @@ app.set('view engine', 'ejs');
 
 //-----------DB------------------
 const pool = mysql.createPool({
-    host: 'db-kdkd.cpuglwdnhpqg.ap-northeast-2.rds.amazonaws.com',
-    user: 'kdkd1234',
-    password: 'kdkd1234',
+    host: 'janedb.cpuglwdnhpqg.ap-northeast-2.rds.amazonaws.com',
+    user: 'admin1234',
+    password: 'admin1234',
     database: 'kdkd',
     port: 3306,
     connectionLimit: 20,
     waitForConnection: false
 });
-http.listen(8888, () => {
-    console.log('8888 port opened!!!');
+http.listen(7777, () => {
+    console.log('7777 port opened!!!');
 })
 //-----------DB------------------
 

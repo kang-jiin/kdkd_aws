@@ -4,9 +4,9 @@
 const fs = require('fs');
 const mysql = require('mysql');
 const pool = mysql.createPool({
-    host: 'db-kdkd.cpuglwdnhpqg.ap-northeast-2.rds.amazonaws.com',
-    user: 'kdkd1234',
-    password: 'kdkd1234',
+    host: 'janedb.cpuglwdnhpqg.ap-northeast-2.rds.amazonaws.com',
+    user: 'admin1234',
+    password: 'admin1234',
     database: 'kdkd',
     port: 3306,
     connectionLimit: 20,
