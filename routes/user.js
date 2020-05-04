@@ -65,6 +65,26 @@ router.post('/login', (req, res) => {
     });
 });
 
+router.get('/guestlogin', (req, res) => {
+    const sess = req.session;
+    sess.userid = 'test1';
+    sess.name = '김지은';
+    sess.grade = 'G';
+    req.session.save(() => {
+        res.redirect('/home');
+    });
+})
+
+router.get('/adminlogin', (req, res) => {
+    const sess = req.session;
+    sess.userid = 'admin1';
+    sess.name = '꽃님반담임';
+    sess.grade = 'A';
+    req.session.save(() => {
+        res.redirect('/home');
+    });
+})
+
 router.get('/naver', passport.authenticate('naver', null), function (req, res) {
     console.log("/main/naver");
 });
