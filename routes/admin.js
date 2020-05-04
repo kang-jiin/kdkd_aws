@@ -2,12 +2,13 @@
 //                      관리자 기능                          //
 //////////////////////////////////////////////////////////////
 
+var db_config  = require('../db-config.json');
 const mysql = require('mysql');
 const pool = mysql.createPool({
-    host: 'janedb.cpuglwdnhpqg.ap-northeast-2.rds.amazonaws.com',
-    user: 'admin1234',
-    password: 'admin1234',
-    database: 'kdkd',
+    host: db_config.host,
+    user: db_config.user,
+    password: db_config.password,
+    database: db_config.database,
     port: 3306,
     connectionLimit: 20,
     waitForConnection: false
