@@ -325,7 +325,7 @@ router.post('/signup', (req, res) => {
     let cln2 = req.body.cln2;
 
     let values = [id, password, "P", name, emailid, emaildomain, tel1, tel2, tel3, addr1, addr2, addr3];
-    let values_relation = [cln1, cln2];
+    let values_student = [cln1, cln2];
     let user_insert = `
     insert into user (id, password, grade, name, emailid, emaildomain, tel1, tel2, tel3, zip_code, address, detail_address)
     values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -340,29 +340,52 @@ router.post('/signup', (req, res) => {
     values(?, ?)
     `;
     pool.getConnection((err, connection) => {
-        connection.query(user_insert, values, (err, result) => {
-            if (err) {
-                console.log(err);
-                connection.release();
-                res.status(500).send('Internal Server Error!!!')
-            }
-            connection.query(student_select, values_relation, (err, result) => {
+        connection.beginTransaction((err) => {
+            connection.query(user_insert, values, (err) => {
                 if (err) {
                     console.log(err);
                     connection.release();
                     res.status(500).send('Internal Server Error!!!')
                 }
-                if (result.length > 0) {
-                    let kim = [result[0].id, id];
-                    connection.query(relation_insert, kim, (err, result) => {
-                        connection.release();
-                        res.redirect('/user/login');
-                    });
-                } else {
-                    sign_up_err = 1;
-                    connection.release();
-                    res.redirect('/user/signup');
-                }
+                connection.query(student_select, values_student, (err, result) => {
+                    if (err) {
+                        connection.rollback(() => {
+                            console.log(err);
+                            connection.release();
+                            res.status(500).send('Internal Server Error!!!');
+                        });
+                    }
+                    if (result.length > 0) {
+                        let values_relation = [result[0].id, id];
+                        connection.query(relation_insert, values_relation, (err) => {
+                            if (err) {
+                                connection.rollback(() => {
+                                    console.log(err);
+                                    connection.release();
+                                    res.status(500).send('Internal Server Error!!!');
+                                });
+                            }
+                            connection.commit((err) => {
+                                if (err) {
+                                    connection.rollback(() => {
+                                        console.log(err);
+                                        connection.release();
+                                        res.status(500).send('Internal Server Error!!!');
+                                    })
+                                }
+                                connection.release();
+                                res.redirect('/user/login');
+                            });
+                        });
+                    } else {
+                        sign_up_err = 1;
+                        connection.rollback(() => {
+                            console.log(err);
+                            connection.release();
+                            res.redirect('/user/signup');
+                        });
+                    }
+                });
             });
         });
     });
